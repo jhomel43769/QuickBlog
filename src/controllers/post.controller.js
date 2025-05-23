@@ -43,6 +43,18 @@ export const createPost = async (req, res) => {
         const savedPost = await newPost.save();
         return res.status(201).json(savedPost);
     } catch (err) {
+        if (err.code === 11000 && err.keyPattern?.slug) {
+            return res.status(400).json({ 
+                error: "Ya existe un post con ese título. Usa un título diferente o especifica un slug único." 
+            });
+        }
+        
+        if (err.name === 'ValidationError') {
+            return res.status(400).json({ 
+                error: "Error de validación", 
+                details: err.message 
+            });
+        }
         console.error("Error al crear el post", err);
         return res.status(500).json({ error: "Error interno del servidor" });
     }
@@ -50,7 +62,7 @@ export const createPost = async (req, res) => {
 //traer todos post 
 export const getPosts = async (req, res) => {
     try {
-        const posts = await Post.findOne()
+        const posts = await Post.find()
         return res.status(200).json({posts})
     } catch (err) {
         console.error("error al treare los post", err)

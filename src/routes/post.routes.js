@@ -7,8 +7,8 @@ router.post("/createPost", createPost)
 
 router.get("/getPosts", getPosts)
 
-router.get("/getPostbyId", getPostById)
+router.get("/getPostbyId/:id", getPostById)
 
-router.put("/updatePost", updatePostById)
+router.put("/updatePost/:id", updatePostById)
 
-router.delete("/deletePost", deletePost)
+router.delete("/deletePost/:id", deletePost)
