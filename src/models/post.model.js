@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const postSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -14,7 +14,7 @@ export const postSchema = new mongoose.Schema({
     },
     
     tags: {
-        type: String,
+        type: [String],
         lowercase: true,
         trim: true
     },
@@ -50,3 +50,6 @@ postSchema.pre('save', function(next) {
   }
   next()
 })
+
+const Post = mongoose.model("Post", postSchema);
+export default Post;
