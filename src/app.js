@@ -1,7 +1,8 @@
 import express from 'express'
 import morgan from 'morgan'
 import { connectDb } from './db.js'
-import { router } from './routes/post.routes.js'
+import { apiRouter } from './routes/post.routes.js'
+import { viewRouter } from './routes/post.view.routes.js' 
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -12,8 +13,8 @@ app.use(morgan("dev"))
 app.set('view engine', 'ejs')
 app.set('views', './src/views')
 
-app.use("/api/post", router)
-
+app.use('/api/post', apiRouter)
+app.use('/post', viewRouter)  
 
 connectDb()
 

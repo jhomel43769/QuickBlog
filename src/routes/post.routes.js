@@ -1,14 +1,14 @@
 import express from "express"
 import { createPost, deletePost, getPostById, getPosts, updatePostById } from "../controllers/post.controller.js"
 
-export const router = express.Router();
+export const apiRouter = express.Router();
 
-router.post("/createPost", createPost)
+apiRouter.post("/createPost", createPost)
 
-router.get("/getPosts", getPosts)
+apiRouter.get("/getPosts", getPosts)
 
-router.get("/getPostbyId/:id", getPostById)
+apiRouter.get("/getPostbyId/:id", getPostById)
 
-router.put("/updatePost/:id", updatePostById)
+apiRouter.put("/updatePost/:id", updatePostById)
 
-router.delete("/deletePost/:id", deletePost)
+apiRouter.delete("/deletePost/:id", deletePost)
