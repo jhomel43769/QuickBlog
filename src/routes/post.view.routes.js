@@ -1,10 +1,21 @@
 import express from "express";
-import { renderNewPostForm, renderEditPostForm, renderPostsList, renderPostById } from "../controllers/post.view.controller.js";
+import {
+  renderNewPostForm,
+  createPostView,
+  renderEditPostForm,
+  updatePostView,
+  renderPostsList,
+  renderPostById
+} from "../controllers/post.view.controller.js";
 
-const viewRouter = express.Router(); 
+const viewRouter = express.Router();
 
 viewRouter.get("/new", renderNewPostForm);
+viewRouter.post("/new", createPostView);
+
 viewRouter.get("/edit/:id", renderEditPostForm);
+viewRouter.post("/edit/:id", updatePostView);
+
 viewRouter.get("/list", renderPostsList);
 viewRouter.get("/view/:id", renderPostById);
 
