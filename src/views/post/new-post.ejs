@@ -11,33 +11,41 @@
   <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-6 text-center">Crear Nuevo Post</h1>
 
-    <form action="/api/post" method="POST" class="space-y-5">
+    <% if (errors && Object.keys(errors).length > 0) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <% Object.values(errors).forEach(error => { %>
+          <p class="text-sm"><%= error %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <form action="/post/new" method="POST" class="space-y-5">
       <div>
         <label class="block mb-1 text-sm font-medium text-gray-700">Título</label>
-        <input type="text" name="title" required minlength="3"
+        <input type="text" name="title" value="<%= post.title || '' %>" required minlength="3"
           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
       <div>
         <label class="block mb-1 text-sm font-medium text-gray-700">Contenido</label>
         <textarea name="content" rows="5" required minlength="20"
-          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+          class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"><%= post.content || '' %></textarea>
       </div>
 
       <div>
         <label class="block mb-1 text-sm font-medium text-gray-700">Tags (separados por coma)</label>
-        <input type="text" name="tags"
+        <input type="text" name="tags" value="<%= post.tags || '' %>"
           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
       <div>
         <label class="block mb-1 text-sm font-medium text-gray-700">Categoría</label>
-        <input type="text" name="category"
+        <input type="text" name="category" value="<%= post.category || '' %>"
           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
       <div class="flex items-center space-x-2">
-        <input type="checkbox" name="published" id="published"
+        <input type="checkbox" name="published" id="published" <%= post.published ? "checked" : "" %>
           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
         <label for="published" class="text-sm text-gray-700">¿Publicado?</label>
       </div>
@@ -49,6 +57,10 @@
         </button>
       </div>
     </form>
+
+    <div class="text-center mt-4">
+      <a href="/post/list" class="text-blue-600 hover:underline text-sm">← Volver al listado</a>
+    </div>
   </div>
 
 </body>

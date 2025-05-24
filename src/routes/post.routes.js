@@ -3,7 +3,7 @@ import { createPost, deletePost, getPostById, getPosts, updatePostById } from ".
 
 export const apiRouter = express.Router();
 
-apiRouter.post("/createPost", createPost)
+apiRouter.post("/", createPost)
 
 apiRouter.get("/getPosts", getPosts)
 

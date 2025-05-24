@@ -1,6 +1,6 @@
 {
   "name": "quickblog",
-  "version": "1.1.1",
+  "version": "1.2.2",
   "description": "practica de ejs (creacion de un blog personal)",
   "main": "app.js",
   "type": "module",
@@ -15,9 +15,9 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "method-override": "^3.0.0",
     "mongoose": "^8.15.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.1.10"
   }
 }
-  

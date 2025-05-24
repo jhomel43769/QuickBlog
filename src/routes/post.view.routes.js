@@ -14,7 +14,7 @@ viewRouter.get("/new", renderNewPostForm);
 viewRouter.post("/new", createPostView);
 
 viewRouter.get("/edit/:id", renderEditPostForm);
-viewRouter.post("/edit/:id", updatePostView);
+viewRouter.put("/edit/:id", updatePostView);
 
 viewRouter.get("/list", renderPostsList);
 viewRouter.get("/view/:id", renderPostById);

@@ -7,7 +7,7 @@ export const renderNewPostForm = (req, res) => {
 
 export const createPostView = async (req, res) => {
   try {
-    const { title, content, tags, category, published, slug, views } = req.body;
+    let { title, content, tags, category, published, slug, views } = req.body;
 
     const errors = {};
 
@@ -17,17 +17,10 @@ export const createPostView = async (req, res) => {
     if (!content || content.trim().length < 20) {
       errors.content = "El contenido es obligatorio y debe tener al menos 20 caracteres";
     }
-    if (tags && !Array.isArray(tags)) {
-      errors.tags = "Los tags deben ser un array";
-    }
-    if (category && typeof category !== "string") {
-      errors.category = "La categoría debe ser un string";
-    }
-    if (published !== undefined && typeof published !== "boolean") {
-      errors.published = "El campo published debe ser booleano";
-    }
-    if (views !== undefined && (typeof views !== "number" || views < 0)) {
-      errors.views = "El campo views no debe ser menor a 0";
+
+    // Procesar tags si vienen como string separado por comas
+    if (tags && typeof tags === 'string') {
+      tags = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     }
 
     if (Object.keys(errors).length > 0) {
@@ -42,14 +35,20 @@ export const createPostView = async (req, res) => {
       content: content.trim(),
       tags: tags || [],
       category: category || "general",
-      published: published !== undefined ? published : false,
+      published: published === 'on' || published === true,
       slug: slug ? slug.trim().toLowerCase() : undefined,
       views: views || 0,
     });
 
     await newPost.save();
-    res.redirect("/posts");
+    res.redirect("/post/list");
   } catch (err) {
+    if (err.code === 11000 && err.keyPattern?.slug) {
+      return res.status(400).render("post/new-post", {
+        errors: { slug: "Ya existe un post con ese título. Usa un título diferente o especifica un slug único." },
+        post: req.body,
+      });
+    }
     console.error(err);
     res.status(500).render("post/new-post", {
       errors: { general: "Error interno del servidor" },
@@ -83,7 +82,7 @@ export const updatePostView = async (req, res) => {
       return res.status(400).send("ID inválido");
     }
 
-    const { title, content, tags, category, published, slug, views } = req.body;
+    let { title, content, tags, category, published, slug, views } = req.body;
 
     const errors = {};
 
@@ -93,17 +92,10 @@ export const updatePostView = async (req, res) => {
     if (!content || content.trim().length < 20) {
       errors.content = "El contenido es obligatorio y debe tener al menos 20 caracteres";
     }
-    if (tags && !Array.isArray(tags)) {
-      errors.tags = "Los tags deben ser un array";
-    }
-    if (category && typeof category !== "string") {
-      errors.category = "La categoría debe ser un string";
-    }
-    if (published !== undefined && typeof published !== "boolean") {
-      errors.published = "El campo published debe ser booleano";
-    }
-    if (views !== undefined && (typeof views !== "number" || views < 0)) {
-      errors.views = "El campo views no debe ser menor a 0";
+
+    // Procesar tags si vienen como string separado por comas
+    if (tags && typeof tags === 'string') {
+      tags = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
     }
 
     if (Object.keys(errors).length > 0) {
@@ -124,7 +116,7 @@ export const updatePostView = async (req, res) => {
         content: content.trim(),
         tags: tags || [],
         category: category || "general",
-        published: published !== undefined ? published : false,
+        published: published === 'on' || published === true,
         slug: slug ? slug.trim().toLowerCase() : undefined,
         views: views || 0,
       },
@@ -135,7 +127,7 @@ export const updatePostView = async (req, res) => {
       return res.status(404).send("Post no encontrado");
     }
 
-    res.redirect(`/posts/${id}`);
+    res.redirect(`/post/view/${id}`);
   } catch (err) {
     console.error(err);
     res.status(500).render("post/edit-post", {

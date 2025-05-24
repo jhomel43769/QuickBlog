@@ -11,8 +11,15 @@
   <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl">
     <h1 class="text-2xl font-bold mb-6 text-center">Editar Post</h1>
 
-    <form action="/api/post/<%= post._id %>" method="POST" class="space-y-5">
-      <input type="hidden" name="_method" value="PUT" />
+    <% if (errors && Object.keys(errors).length > 0) { %>
+      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <% Object.values(errors).forEach(error => { %>
+          <p class="text-sm"><%= error %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <form action="/post/edit/<%= post._id %>?_method=PUT" method="POST" class="space-y-5">
       
       <div>
         <label class="block mb-1 text-sm font-medium text-gray-700">Título</label>
@@ -27,8 +34,8 @@
       </div>
 
       <div>
-        <label class="block mb-1 text-sm font-medium text-gray-700">Tags</label>
-        <input type="text" name="tags" value="<%= post.tags.join(', ') %>"
+        <label class="block mb-1 text-sm font-medium text-gray-700">Tags (separados por coma)</label>
+        <input type="text" name="tags" value="<%= Array.isArray(post.tags) ? post.tags.join(', ') : post.tags || '' %>"
           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
@@ -51,6 +58,12 @@
         </button>
       </div>
     </form>
+
+    <div class="text-center mt-4">
+      <a href="/post/view/<%= post._id %>" class="text-blue-600 hover:underline text-sm">← Volver al post</a>
+      <span class="mx-2">|</span>
+      <a href="/post/list" class="text-blue-600 hover:underline text-sm">Ver todos los posts</a>
+    </div>
   </div>
 
 </body>

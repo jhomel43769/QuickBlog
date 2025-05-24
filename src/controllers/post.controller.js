@@ -14,8 +14,8 @@ export const createPost = async (req, res) => {
             return res.status(400).json({ error: "El contenido es obligatorio y debe tener al menos 20 caracteres" });
         }
 
-        if (tags && !Array.isArray(tags)) {
-            return res.status(400).json({ error: "Los tags deben ser un array" });
+        if (tags && !String) {
+            return res.status(400).json({ error: "Los tags deben ser un string" });
         }
 
         if (category && typeof category !== "string") {
